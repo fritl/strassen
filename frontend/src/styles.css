@@ -7,6 +7,17 @@
     padding: 8px 12px;
     z-index: 1;
     pointer-events: initial;
+
+    background-color: #ff8c49;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    transition: ease-in-out, 100ms;
+
+    &:hover {
+        background-color: #a93e00;
+    }
+
 }
 
 #overlay {
@@ -21,6 +32,10 @@
     right: 0;
     margin: 24px;
     top: 0;
+    background-color: #002535;
+    color: white;
+    padding: .5em;
+    border-radius: 6px;
 }
 
 body {

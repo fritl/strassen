@@ -2,11 +2,25 @@ import './styles.css'
 import "./reset.css"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
+import startSvg from "./assets/icon_start.svg"
+import endSvg from "./assets/icon_end.svg"
 
 var map = L.map('map').setView([47, 13], 8);
 
 let line;
 const time_info = document.getElementById("time_info");
+
+const start_icon = L.icon({
+    iconUrl: startSvg,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16]
+})
+
+const end_icon = L.icon({
+    iconUrl: endSvg,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32]
+})
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -17,8 +31,8 @@ const [[start_initial_lng, start_initial_lat], [end_initial_lng, end_initial_lat
     fetch(`/api/nearest_node?lat=${47.821983709487405}&lon=${13.0444997549057}`).then(res => res.json()),
     fetch(`/api/nearest_node?lat=${48.18086191030826}&lon=${16.37550294399262}`).then(res => res.json()),
 ])
-let start = L.marker([start_initial_lat, start_initial_lng], { draggable: true, title: "Startpunkt" }).addTo(map)
-let end = L.marker([end_initial_lat, end_initial_lng], { draggable: true, title: "Zielpunkt" }).addTo(map)
+let start = L.marker([start_initial_lat, start_initial_lng], { draggable: true, title: "Startpunkt", icon: start_icon }).addTo(map)
+let end = L.marker([end_initial_lat, end_initial_lng], { draggable: true, title: "Zielpunkt", icon: end_icon }).addTo(map)
 
 async function onMove() {
     let end_coords = end.getLatLng();
@@ -48,7 +62,7 @@ async function showPath() {
     const [time, coords] = await fetch(`/api/route?start_lat=${start_coords.lat}&start_lng=${start_coords.lng}&end_lat=${end_coords.lat}&end_lng=${end_coords.lng}`).then(res => res.json())
     time_info.innerHTML = `Dauer: ${formatDuration(time)}`
     line?.remove();
-    line = L.polyline(coords.map(([lng, lat]) => [lat, lng])).addTo(map);
+    line = L.polyline(coords.map(([lng, lat]) => [lat, lng]), { color: "#002535" }).addTo(map);
 }
 
 const button = document.getElementById("path_button");
