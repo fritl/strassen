@@ -16,7 +16,23 @@ type StreetGraph = dict[int, dict[int, EdgeInfo]]
 
 
 def load_gpkg(file: Path, layer: str) -> StreetGraph:
-    with fiona.open(file, layer=layer) as src:
+    with fiona.open(
+        file,
+        layer=layer,
+        include_fields=[
+            "node_from_short_id",
+            "node_to_short_id",
+            "length",
+            "construction_state",
+            "access_tow",
+            "oneway_car",
+            "speed_tow_car",
+            "maxspeed_tow_car",
+            "access_bkw",
+            "speed_bkw_car",
+            "maxspeed_bkw_car",
+        ],
+    ) as src:
         G: StreetGraph = {}
 
         def add_edge(
@@ -35,7 +51,6 @@ def load_gpkg(file: Path, layer: str) -> StreetGraph:
             )
 
         num_edges = len(src)
-        speed_skips = 0
         for i, feat in enumerate(src):
             if i % 10000 == 0:
                 print(f"{i} / {num_edges}")
@@ -61,7 +76,6 @@ def load_gpkg(file: Path, layer: str) -> StreetGraph:
                 if speed <= 0:
                     speed = props["maxspeed_tow_car"]
                 if speed <= 0:
-                    speed_skips += 1
                     continue
                 add_edge(from_node, to_node, length, speed, tuple(coords))
 
@@ -73,11 +87,9 @@ def load_gpkg(file: Path, layer: str) -> StreetGraph:
                 if speed <= 0:
                     speed = props["maxspeed_bkw_car"]
                 if speed <= 0:
-                    speed_skips += 1
                     continue
                 coords.reverse()
                 add_edge(to_node, from_node, length, speed, tuple(coords))
-    print("Speed skips:", speed_skips)
     return G
 
 
