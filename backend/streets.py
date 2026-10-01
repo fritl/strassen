@@ -92,3 +92,7 @@ def find_next_node(streets: StreetGraph, coords: tuple[float, float]) -> int:
             min_dist = d
             min_node = node
     return min_node
+
+
+def node_to_coords(streets: StreetGraph, id: int) -> tuple[float, float]:
+    return next(iter(streets[id].values())).coordinates[0]

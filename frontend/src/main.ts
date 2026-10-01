@@ -10,13 +10,33 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-let start = L.marker([47.821983709487405, 13.0444997549057], { draggable: true, title: "Startpunkt" }).addTo(map)
-let end = L.marker([48.18086191030826, 16.37550294399262], { draggable: true, title: "Zielpunkt" }).addTo(map)
+const [[start_initial_lng, start_initial_lat], [end_initial_lng, end_initial_lat]] = await Promise.all([
+    fetch(`/api/nearest_node?lat=${47.821983709487405}&lon=${13.0444997549057}`).then(res => res.json()),
+    fetch(`/api/nearest_node?lat=${48.18086191030826}&lon=${16.37550294399262}`).then(res => res.json()),
+])
+let start = L.marker([start_initial_lat, start_initial_lng], { draggable: true, title: "Startpunkt" }).addTo(map)
+let end = L.marker([end_initial_lat, end_initial_lng], { draggable: true, title: "Zielpunkt" }).addTo(map)
 
-function onMove(e) {
-    start.setLatLng([47.821983709487405, 13.0444997549057])
-    end.setLatLng([48.18086191030826, 16.37550294399262])
+async function onMove(e) {
+    let end_coords = end.getLatLng();
+    let start_coords = start.getLatLng();
+    const start_req = fetch(`/api/nearest_node?lat=${start_coords.lat}&lon=${start_coords.lng}`).then((res) => res.json())
+    const end_req = fetch(`/api/nearest_node?lat=${end_coords.lat}&lon=${end_coords.lng}`).then((res) => res.json())
+    const [[start_lng, start_lat], [end_lng, end_lat]] = await Promise.all([start_req, end_req]);
+    start.setLatLng([start_lat, start_lng])
+    end.setLatLng([end_lat, end_lng])
 }
+
+async function showPath() {
+    let end_coords = end.getLatLng();
+    let start_coords = start.getLatLng();
+    const [time, coords] = await fetch(`/api/route?start_lat=${start_coords.lat}&start_lng=${start_coords.lng}&end_lat=${end_coords.lat}&end_lng=${end_coords.lng}`).then(res => res.json())
+    L.polyline(coords.map(([lng, lat]) => [lat, lng])).addTo(map);
+    console.log(time / 60)
+}
+
+const button = document.getElementById("path_button");
+button.addEventListener("click", showPath)
 
 start.on("dragend", onMove)
 end.on("dragend", onMove)
