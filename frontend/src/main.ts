@@ -5,6 +5,9 @@ import "leaflet/dist/leaflet.css"
 
 var map = L.map('map').setView([47, 13], 8);
 
+let line;
+const time_info = document.getElementById("time_info");
+
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -17,7 +20,7 @@ const [[start_initial_lng, start_initial_lat], [end_initial_lng, end_initial_lat
 let start = L.marker([start_initial_lat, start_initial_lng], { draggable: true, title: "Startpunkt" }).addTo(map)
 let end = L.marker([end_initial_lat, end_initial_lng], { draggable: true, title: "Zielpunkt" }).addTo(map)
 
-async function onMove(e) {
+async function onMove() {
     let end_coords = end.getLatLng();
     let start_coords = start.getLatLng();
     const start_req = fetch(`/api/nearest_node?lat=${start_coords.lat}&lon=${start_coords.lng}`).then((res) => res.json())
@@ -27,12 +30,25 @@ async function onMove(e) {
     end.setLatLng([end_lat, end_lng])
 }
 
+function formatDuration(totalSeconds: number) {
+    if (totalSeconds < 60) {
+        return `${Math.round(totalSeconds)}s`;
+    }
+
+    const totalMinutes = Math.round(totalSeconds / 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    return hours > 0 ? `${hours} Std. ${minutes} min.` : `${minutes} min.`;
+}
+
 async function showPath() {
     let end_coords = end.getLatLng();
     let start_coords = start.getLatLng();
     const [time, coords] = await fetch(`/api/route?start_lat=${start_coords.lat}&start_lng=${start_coords.lng}&end_lat=${end_coords.lat}&end_lng=${end_coords.lng}`).then(res => res.json())
-    L.polyline(coords.map(([lng, lat]) => [lat, lng])).addTo(map);
-    console.log(time / 60)
+    time_info.innerHTML = `Dauer: ${formatDuration(time)}`
+    line?.remove();
+    line = L.polyline(coords.map(([lng, lat]) => [lat, lng])).addTo(map);
 }
 
 const button = document.getElementById("path_button");

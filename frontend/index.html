@@ -1,14 +1,20 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>frontend</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="map"></div>
-    <button id="path_button">Weg finden</button>
+    <div id="overlay">
+        <button id="path_button">Weg finden</button>
+        <div id="time_info"></div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
-  </body>
+</body>
+
 </html>
