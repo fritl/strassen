@@ -5,6 +5,8 @@ import "leaflet/dist/leaflet.css"
 import startSvg from "./assets/icon_start.svg"
 import endSvg from "./assets/icon_end.svg"
 
+const button = document.querySelector<HTMLButtonElement>("#path_button");
+button.disabled = true;
 var map = L.map('map').setView([47, 13], 8);
 
 let line;
@@ -33,8 +35,10 @@ const [[start_initial_lng, start_initial_lat], [end_initial_lng, end_initial_lat
 ])
 let start = L.marker([start_initial_lat, start_initial_lng], { draggable: true, title: "Startpunkt", icon: start_icon }).addTo(map)
 let end = L.marker([end_initial_lat, end_initial_lng], { draggable: true, title: "Zielpunkt", icon: end_icon }).addTo(map)
+button.disabled = false;
 
 async function onMove() {
+    button.disabled = true;
     let end_coords = end.getLatLng();
     let start_coords = start.getLatLng();
     const start_req = fetch(`/api/nearest_node?lat=${start_coords.lat}&lon=${start_coords.lng}`).then((res) => res.json())
@@ -42,6 +46,7 @@ async function onMove() {
     const [[start_lng, start_lat], [end_lng, end_lat]] = await Promise.all([start_req, end_req]);
     start.setLatLng([start_lat, start_lng])
     end.setLatLng([end_lat, end_lng])
+    button.disabled = false;
 }
 
 function formatDuration(totalSeconds: number) {
@@ -57,15 +62,16 @@ function formatDuration(totalSeconds: number) {
 }
 
 async function showPath() {
+    button.disabled = true;
     let end_coords = end.getLatLng();
     let start_coords = start.getLatLng();
     const [time, coords] = await fetch(`/api/route?start_lat=${start_coords.lat}&start_lng=${start_coords.lng}&end_lat=${end_coords.lat}&end_lng=${end_coords.lng}`).then(res => res.json())
     time_info.innerHTML = `Dauer: ${formatDuration(time)}`
     line?.remove();
     line = L.polyline(coords.map(([lng, lat]) => [lat, lng]), { color: "#002535" }).addTo(map);
+    button.disabled = false;
 }
 
-const button = document.getElementById("path_button");
 button.addEventListener("click", showPath)
 
 start.on("dragend", onMove)

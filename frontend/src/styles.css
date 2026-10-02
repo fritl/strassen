@@ -18,6 +18,11 @@
         background-color: #a93e00;
     }
 
+    &:disabled {
+        background-color: #2d1d18;
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 }
 
 #overlay {
