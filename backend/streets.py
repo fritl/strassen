@@ -1,9 +1,9 @@
-import math
+from sklearn.neighbors import BallTree
+from math import radians
 from dataclasses import dataclass
 from pathlib import Path
 
 import fiona
-from pyproj import Geod
 
 
 @dataclass(frozen=True)
@@ -93,17 +93,19 @@ def load_gpkg(file: Path, layer: str) -> StreetGraph:
     return G
 
 
-def find_next_node(streets: StreetGraph, coords: tuple[float, float]) -> int:
-    geod = Geod(ellps="WGS84")
-    min_dist = math.inf
-    min_node = -1
-    for node in streets:
-        node_coords = next(iter(streets[node].values())).coordinates[0]
-        _, _, d = geod.inv(node_coords[1], node_coords[0], coords[1], coords[0])
-        if d < min_dist:
-            min_dist = d
-            min_node = node
-    return min_node
+class NodeIndex:
+    def __init__(self, streets: StreetGraph):
+        self.__node_ids = []
+        self.__coordinates = []
+        for id, v in streets.items():
+            self.__node_ids.append(id)
+            c = next(iter(v.values())).coordinates[0]
+            self.__coordinates.append((radians(c[1]), radians(c[0])))
+        self.__tree = BallTree(self.__coordinates, metric="haversine")
+
+    def find_next_node(self, coords: tuple[float, float]) -> int:
+        _, id = self.__tree.query([[radians(coords[1]), radians(coords[0])]])
+        return self.__node_ids[id[0][0]]
 
 
 def node_to_coords(streets: StreetGraph, id: int) -> tuple[float, float]:
