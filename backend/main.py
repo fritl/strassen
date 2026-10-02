@@ -1,13 +1,22 @@
+from contextlib import contextmanager, asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
 
 from dijkstra import dijkstra
-from streets import find_next_node, load_gpkg, node_to_coords
+from streets import find_next_node, load_gpkg, node_to_coords, StreetGraph
 
-G = load_gpkg(Path("./data/strassen.gpkg"), "strassen")
+G: StreetGraph
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global G
+    G = load_gpkg(Path("./data/strassen.gpkg"), "strassen")
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/api/nearest_node")

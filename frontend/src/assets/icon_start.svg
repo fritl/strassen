@@ -1,58 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
-   width="77.660706mm"
-   height="77.661041mm"
-   viewBox="0 0 77.660706 77.661041"
+   width="32"
+   height="32"
+   viewBox="0 0 24 24"
+   fill="none"
+   color="#ff6600"
    version="1.1"
    id="svg1"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
      id="defs1" />
-  <g
-     id="layer1"
-     transform="matrix(2.2279616,0,0,2.2279616,-273.94165,-380.25347)">
-    <path
-       d="m 140.38483,197.34879 c 5.10684,0 9.24671,-4.13989 9.24671,-9.24674 0,-5.10684 -4.13987,-9.24672 -9.24671,-9.24672 -5.10685,0 -9.24672,4.13988 -9.24672,9.24672 0,5.10685 4.13987,9.24674 9.24672,9.24674 z"
-       stroke="#000000"
-       stroke-width="2.35747"
-       stroke-linecap="round"
-       stroke-linejoin="round"
-       id="path1-4"
-       style="fill:none;fill-opacity:1;stroke:#ff6600;stroke-width:3.77249;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       d="m 150.70113,188.10198 h 4.88193"
-       stroke="#000000"
-       stroke-width="2.8554"
-       stroke-linecap="round"
-       stroke-linejoin="round"
-       id="path1"
-       style="stroke:#ff6600;stroke-width:4.48841;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       d="m 140.38483,177.58979 v -4.62965"
-       stroke="#000000"
-       stroke-width="2.8554"
-       stroke-linecap="round"
-       stroke-linejoin="round"
-       id="path2"
-       style="stroke:#ff6600;stroke-width:4.48841;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       d="m 125.19459,187.90334 h 5.05545"
-       stroke="#000000"
-       stroke-width="2.8554"
-       stroke-linecap="round"
-       stroke-linejoin="round"
-       id="path6"
-       style="stroke:#ff6600;stroke-width:4.48841;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       d="m 140.38482,198.60169 v 4.71481"
-       stroke="#000000"
-       stroke-width="2.8554"
-       stroke-linecap="round"
-       stroke-linejoin="round"
-       id="path7"
-       style="stroke:#ff6600;stroke-width:4.48841;stroke-dasharray:none;stroke-opacity:1" />
-  </g>
+  <path
+     d="M 1.8868906,21.273978 11.469975,2.0737909 c 0.232541,-0.4132949 0.827514,-0.4132949 1.060055,0 l 9.58306,19.0920081 c 0.279973,0.497676 -0.218311,1.071853 -0.750406,0.864852 l -9.142303,-6.475983 c -0.141689,-0.05522 -0.299068,-0.05522 -0.440757,0 L 2.6373087,22.13883 C 2.1051773,22.345831 1.6069783,21.771654 1.8868906,21.273978 Z"
+     stroke="#ff6600"
+     stroke-width="3.64865"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path1" />
 </svg>
