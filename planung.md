@@ -1,5 +1,5 @@
 # Daten
-Daten von des
+Daten von
 [GIP](https://www.data.gv.at/datasets/3fefc838-791d-4dde-975b-a4131a54e7c5) (Graphenintegrations-Plattform)
 über OGD (Open Goverment Data) heruntergeladen.
 
@@ -48,11 +48,7 @@ Die Daten werden in Python eingelesen und als Graph dargestellt. Eine Webanwendu
 
 - Python
     - [Fiona](https://pypi.org/project/fiona/) - Einlesen von geopackage dateien
-    - [Folium](https://pypi.org/project/folium/) - Zeichnen von Karten
-    - [pyproj](https://pyproj4.github.io/pyproj/stable/) - Berechnen der Distanz zwischen zwei Koordinaten
-
-# Offene Fragen
-- API Planung
-- Frontend Planung (eingabe von Punkten / Orten, Anzeige einer Karte mit der Route
-- Technische Details (welches Webframework, Code struktur, ...)
-
+    - [scikit-learn](https://scikit-learn.org/) - Finden der nächsten node mittels eines BallTrees
+    - [fastapi](https://fastapi.tiangolo.com/) - HTTP Api
+- HTML, CSS, JS
+    - [leaflet](https://leafletjs.com/) - Dasrstellen des Wegs auf einer Karte im Browser
